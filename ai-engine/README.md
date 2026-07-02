@@ -1,20 +1,46 @@
-# ai-engine — AI Engineer
+# ai-engine — Python (FastAPI + Gemini)
 
-**Language:** your choice (Python and Node.js both have first-class Gemini SDKs)
+Standalone multimodal parser. Extracts a structured order from Nigerian pidgin / English chat text or an audio voice note.
 
-Turns raw customer chat text and voice notes into structured order JSON.
-Standalone service — the rest of the team only cares about your JSON contract,
-not what language produced it.
+## Stack
+- Python 3.11 · FastAPI · uvicorn · `google-generativeai` (Gemini)
 
-Full brief, the output JSON contract, and starter system prompt: `/docs/3_AI_Engineer_Gemini_Layer.docx`
-
-## Getting started
-
-Nothing's scaffolded yet. Ship this as a small HTTP service with one endpoint:
-
-```
-POST /api/ai/parse-order
+## Run
+```bash
+cp .env.example .env          # set GEMINI_API_KEY
+pip install -r requirements.txt
+uvicorn app:app --port 5000 --reload
 ```
 
-Lock the output JSON shape with the team before writing the full prompt —
-it's the seam Backend Dev 1 and Frontend Dev 2 both build against.
+If `GEMINI_API_KEY` is not set (or `AI_MOCK=True`), the service falls back to a **deterministic rule-based mock** so both frontends can be developed offline.
+
+## Endpoint
+
+`POST /api/ai/parse-order`
+
+Body — either shape:
+```json
+{ "merchant_id": "<uuid>", "message_text": "Abeg send two black tracksuits to FUTO front gate" }
+```
+or
+```json
+{ "merchant_id": "<uuid>", "audio_base64": "<base64 wav/mp3>", "audio_mime": "audio/wav" }
+```
+
+Response (always this exact schema, no markdown fences):
+```json
+{
+  "items": [{ "item": "Black tracksuit", "qty": 2, "size": "M", "color": "black" }],
+  "delivery_address": "FUTO front gate",
+  "delivery_type": "rider",
+  "missing_fields": [],
+  "follow_up_question": null,
+  "confidence": "high"
+}
+```
+
+## Eval
+```bash
+python eval.py             # runs test_phrases.json against the live endpoint
+```
+Fails if any response isn't valid JSON matching the schema. Ships with 6 varied Nigerian pidgin / English test phrases.

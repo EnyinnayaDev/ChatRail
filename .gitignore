@@ -1,26 +1,26 @@
+# Env
+.env
+*.env.local
+
 # Python
 __pycache__/
-*.py[cod]
-*.egg-info/
+*.pyc
+*.pyo
 .venv/
 venv/
-env/
+db.sqlite3
 
 # Node
 node_modules/
 dist/
 build/
-.env
-.env.local
+.vite/
+npm-debug.log*
 
-# Editors/OS
+# OS
 .DS_Store
+Thumbs.db
+
+# IDE
 .vscode/
 .idea/
-
-# Django
-*.sqlite3
-staticfiles/
-
-# Logs
-*.log

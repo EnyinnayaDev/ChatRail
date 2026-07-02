@@ -1,18 +1,25 @@
+version: "3.9"
+
 services:
-  postgres:
-    image: postgres:16
-    container_name: chatrail-db
+  db:
+    image: postgres:15-alpine
+    container_name: swiftorder-db
     restart: unless-stopped
     environment:
-      POSTGRES_DB: chatrail
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: swiftorder
+      POSTGRES_PASSWORD: swiftorder
+      POSTGRES_DB: swiftorder
     ports:
       - "5432:5432"
     volumes:
-      - chatrail_pgdata:/var/lib/postgresql/data
-      - ./database/schema.sql:/docker-entrypoint-initdb.d/1_schema.sql
-      - ./database/seed.sql:/docker-entrypoint-initdb.d/2_seed.sql
+      - swiftorder_pg:/var/lib/postgresql/data
+      - ./database/schema.sql:/docker-entrypoint-initdb.d/01_schema.sql:ro
+      - ./database/seed.sql:/docker-entrypoint-initdb.d/02_seed.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U swiftorder -d swiftorder"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
 
 volumes:
-  chatrail_pgdata:
+  swiftorder_pg:

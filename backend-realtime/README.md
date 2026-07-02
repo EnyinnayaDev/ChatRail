@@ -1,22 +1,43 @@
-# backend-realtime — Backend Dev 2
+# backend-realtime — Node.js (Express + ws + pg)
 
-**Language:** JavaScript (Node.js + Express)
+Webhook + real-time layer. Runs as its own process on **port 4000**, separate from Django.
 
-Webhooks, order state machine, and the WebSocket layer that pushes live
-status updates to the Merchant Dashboard.
+## Stack
+- Node 20 · Express · `ws` · `pg` · `dotenv`
 
-Full brief, endpoint list, and the state machine diagram: `/docs/2_Backend_Dev2_Realtime_Webhooks.docx`
-Schema you're connecting to (read/write only, no migrations): `/database/schema.sql`
-
-## Getting started
-
-Nothing's scaffolded yet — start your project here, e.g.:
-
+## Run
 ```bash
-npm init -y
-npm install express pg ws dotenv cors
+cp .env.example .env
+npm install
+npm run dev
 ```
 
-Connect to the same shared Postgres instance Backend Dev 1 uses (see root
-README for `docker compose up`). Do not run migrations from this service —
-if you need a schema change, ask Backend Dev 1 to add it to `/database/schema.sql`.
+## Endpoints
+| Method | Path | Purpose |
+|---|---|---|
+| POST  | `/api/webhooks/opay`                      | OPay payment confirmation (idempotent) |
+| PATCH | `/api/orders/:id/assign-rider`            | → `out_for_delivery` |
+| PATCH | `/api/orders/:id/deliver`                 | → `delivered` |
+| GET   | `/health`                                 | Health check |
+| WS    | `/ws?merchant_id=<uuid>`                  | Live status broadcasts |
+
+## State machine
+```
+pending_approval → awaiting_payment → paid → out_for_delivery → delivered
+(any)            → cancelled
+```
+Any other transition returns HTTP **409**.
+
+## Webhook simulation
+```bash
+curl -X POST localhost:4000/api/webhooks/opay \
+  -H "Content-Type: application/json" \
+  -d '{"reference":"SWO-ABCDEF123456","amount":"15000.00","status":"SUCCESS"}'
+```
+Repeat the same call — the second one is a no-op (idempotent).
+
+## WebSocket smoke test
+```bash
+npx wscat -c 'ws://localhost:4000/ws?merchant_id=11111111-1111-1111-1111-111111111111'
+```
+Then trigger the webhook or a PATCH — the client receives `{ order_id, status, event_type }` within ~1s.
