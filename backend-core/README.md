@@ -8,6 +8,7 @@ Core REST API. Models mirror `database/schema.sql` 1:1.
 ## Run
 ```bash
 cp .env.example .env
+python -m venv .venv
 pip install -r requirements.txt
 python manage.py migrate      # only this service runs migrations
 python manage.py runserver 8000
@@ -33,15 +34,33 @@ curl -X POST localhost:8000/api/merchants/ -H "Content-Type: application/json" \
   -d '{"name":"Ada","phone":"+2348010000000","business_type":"apparel"}'
 
 # create order
-curl -X POST localhost:8000/api/orders/ -H "Content-Type: application/json" \
+curl -X T localhost:8000/api/orders/ -H "Content-Type: application/json" \
   -d '{"merchant_id":"<id>","items":[{"item":"Black shirt","qty":2}],"delivery_address":"FUTO","delivery_type":"rider"}'
+
+curl -X POST http://localhost:8000/api/orders/ \
+  -H "Content-Type: application/json" \
+  -d '{
+    "merchant_id": "309c0242-afb6-41c6-b2c6-4e61f6a16e3f",
+    "items": [
+      {
+        "item": "T-Shirt",
+        "qty": 2
+      }
+    ]
+  }'
 
 # approve
 curl -X PATCH localhost:8000/api/orders/<order_id>/approve/ \
   -H "Content-Type: application/json" -d '{"total_amount":8000}'
 
+curl -X PATCH http://localhost:8000/api/orders/19cd6f25-f1f7-4f3c-8b6e-ad6fc0f06efc/approve/ \
+  -H "Content-Type: application/json" \
+  -d '{"total_amount":8000}'
+
 # payment link
 curl -X POST localhost:8000/api/orders/<order_id>/payment-link/
+
+curl -X POST http://localhost:8000/api/orders/19cd6f25-f1f7-4f3c-8b6e-ad6fc0f06efc/payment-link/
 ```
 
 ## OPay sandbox note
