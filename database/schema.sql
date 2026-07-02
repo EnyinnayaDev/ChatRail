@@ -1,4 +1,4 @@
--- OPay SwiftOrder — database schema
+-- ChatRail — database schema
 -- Owned by Backend Dev 1 (Python/Django will generate its own migrations from
 -- this same shape). Backend Dev 2 (Node.js) connects to this same database
 -- directly and must NOT run its own migrations — see /docs for the rule.

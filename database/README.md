@@ -10,14 +10,14 @@ connects to the same database directly and never runs its own migrations.
 docker compose up -d
 ```
 
-This spins up Postgres on `localhost:5432` (db: `swiftorder`, user/pass: `postgres`/`postgres`)
+This spins up Postgres on `localhost:5432` (db: `chatrail`, user/pass: `postgres`/`postgres`)
 with `schema.sql` and `seed.sql` applied automatically on first run.
 
 No Docker? Run the two files manually against any local Postgres instance:
 
 ```bash
-psql -U postgres -d swiftorder -f database/schema.sql
-psql -U postgres -d swiftorder -f database/seed.sql
+psql -U postgres -d chatrail -f database/schema.sql
+psql -U postgres -d chatrail -f database/seed.sql
 ```
 
 ## Files
