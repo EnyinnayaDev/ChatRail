@@ -34,6 +34,10 @@ curl -X POST localhost:4000/api/webhooks/opay \
   -H "Content-Type: application/json" \
   -d '{"reference":"SWO-ABCDEF123456","amount":"15000.00","status":"SUCCESS"}'
 ```
+
+```
+curl -X POST localhost:4000/api/webhooks/opay -H "Content-Type: application/json" -d '{"reference":"SWO-ABCDEF123456","amount":"15000.00","status":"SUCCESS"}'
+```
 Repeat the same call — the second one is a no-op (idempotent).
 
 ## WebSocket smoke test
