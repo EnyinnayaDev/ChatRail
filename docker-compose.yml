@@ -1,0 +1,18 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: swiftorder-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: swiftorder
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - swiftorder_pgdata:/var/lib/postgresql/data
+      - ./database/schema.sql:/docker-entrypoint-initdb.d/1_schema.sql
+      - ./database/seed.sql:/docker-entrypoint-initdb.d/2_seed.sql
+
+volumes:
+  swiftorder_pgdata:
