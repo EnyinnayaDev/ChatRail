@@ -6,7 +6,7 @@ from pathlib import Path
 from dotenv import load_dotenv
 
 BASE_DIR = Path(__file__).resolve().parent.parent
-load_dotenv(BASE_DIR / ".env")
+load_dotenv(dotenv_path=BASE_DIR / ".env")
 
 SECRET_KEY = os.getenv("DJANGO_SECRET_KEY")
 DEBUG = os.getenv("DJANGO_DEBUG", "True").lower() == "true"
@@ -36,26 +36,21 @@ TEMPLATES = [{
     "OPTIONS": {"context_processors": []},
 }]
 
-USE_SQLITE = os.getenv("USE_SQLITE", "False").lower() == "true"
 
-if USE_SQLITE:
-    DATABASES = {
-        "default": {
-            "ENGINE": "django.db.backends.sqlite3",
-            "NAME": BASE_DIR / "db.sqlite3",
-        }
+
+DATABASES = {
+    "default": {
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": os.getenv("DB_NAME"),
+        "USER": os.getenv("DB_USER"),
+        "PASSWORD": os.getenv("DB_PASSWORD"),
+        "HOST": os.getenv("DB_HOST"),
+        "PORT": os.getenv("DB_PORT")
     }
-else:
-    DATABASES = {
-        "default": {
-            "ENGINE": "django.db.backends.postgresql",
-            "HOST": os.getenv("DB_HOST", "localhost"),
-            "NAME": os.getenv("DB_NAME", "swiftorder"),
-            "USER": os.getenv("DB_USER", "swiftorder"),
-            "PASSWORD": os.getenv("DB_PASSWORD", "swiftorder"),
-            "PORT": os.getenv("DB_PORT", "5432"),
-        }
-    }
+}
+
+
+
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 LANGUAGE_CODE = "en-us"

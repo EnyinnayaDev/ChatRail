@@ -1,6 +1,6 @@
-export const API_BASE = "http://localhost:8000";        // backend-core
-export const REALTIME_BASE = "http://localhost:4000";    // backend-realtime (HTTP)
-export const WS_BASE = "ws://localhost:4000";            // backend-realtime (ws)
+export const API_BASE = import.meta.env.VITE_API_BASE;        // backend-core (to create the draft order)
+export const REALTIME_BASE = import.meta.env.VITE_REALTIME_BASE;    // backend-realtime (HTTP)
+export const WS_BASE = import.meta.env.VITE_WS_BASE;           // backend-realtime (WebSocket)
 
 // Demo merchant from database/seed.sql — "Ada Fashion House"
 export const DEMO_MERCHANT_ID = "11111111-1111-1111-1111-111111111111";
