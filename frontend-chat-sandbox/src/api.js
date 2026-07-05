@@ -11,6 +11,7 @@ export async function parseOrder({ message_text, audio_base64, audio_mime }) {
     const body = { merchant_id: DEMO_MERCHANT_ID };
     if (audio_base64) { body.audio_base64 = audio_base64; body.audio_mime = audio_mime; }
     else              { body.message_text = message_text; }
+    console.log(body);
     const res = await fetch(`${AI_BASE}/api/ai/parse-order`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },

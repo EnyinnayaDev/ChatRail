@@ -1,6 +1,6 @@
 # frontend-chat-sandbox — React (Vite)
 
-WhatsApp-style demo chat. **Port 5174.** This is the highest-visibility screen on demo day — prioritized to look convincingly like real WhatsApp (bubbles, timestamps, mic button).
+WhatsApp-style demo chat. **Port 5174.** This screen is customer-facing only — it imitates WhatsApp Business (bubbles, timestamps, mic button) and does not include login or register flows.
 
 ## Stack
 - React 18 · Vite 5 · plain HTML/CSS (no Tailwind)
@@ -14,6 +14,7 @@ npm run dev
 Open http://localhost:5174 (open the dashboard at :5173 in a second window for the full demo).
 
 ## Behaviour
+- Opens directly into the chat experience; there is no auth gate here.
 - Type a message or hold the mic button to record a voice note.
 - Message is sent to **ai-engine** `POST /api/ai/parse-order`.
 - Response is rendered back into the chat as a system "confirmation card" (items · address · confidence).

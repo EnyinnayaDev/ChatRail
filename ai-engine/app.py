@@ -3,6 +3,7 @@ FastAPI service — POST /api/ai/parse-order
 """
 import os
 from typing import Optional, List, Any
+from pathlib import Path
 
 from dotenv import load_dotenv
 from fastapi import FastAPI, HTTPException
@@ -11,7 +12,9 @@ from pydantic import BaseModel, Field
 
 import mock_parser
 
-load_dotenv()
+BASE_DIR = Path(__file__).resolve().parent
+load_dotenv(dotenv_path=BASE_DIR / ".env")
+print(f"Loaded .env from {BASE_DIR / '.env'}")
 
 app = FastAPI(title="OPay SwiftOrder — ai-engine", version="0.1.0")
 app.add_middleware(

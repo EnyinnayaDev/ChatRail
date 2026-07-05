@@ -2,6 +2,8 @@
 
 Merchant kanban board. **Port 5173.**
 
+The dashboard now includes a lightweight demo login/register gate before the order board. In the current prototype this is front-end only and persists in the browser.
+
 ## Stack
 - React 18 · Vite 5 · plain HTML/CSS (no Tailwind)
 
@@ -16,6 +18,7 @@ Open http://localhost:5173
 Edit `src/config.js` if your backends run on non-default ports.
 
 ## Behaviour
+- Login/register gate before the dashboard workspace.
 - 5 kanban columns: Pending Approval → Awaiting Payment → Paid → Out for Delivery → Delivered.
 - Cards show order id, items summary, and total (once approved).
 - Clicking a card opens the detail panel with:
